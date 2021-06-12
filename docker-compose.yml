@@ -12,6 +12,8 @@ services:
       - ${CORE_PATH}:/app
     ports:
       - "5000:8080"
+    depends_on:
+      - database
   web:
     container_name: web
     build:
@@ -21,12 +23,14 @@ services:
       - ${WEB_PATH}:/app
     ports:
       - "5001:8080"
-  mysql:
-    container_name: mysql
-    image: "mysql:8"
-    expose:
-      - "3306"
+  database:
+    container_name: database
+    image: "postgres:13.3"
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
     ports:
-      - "${DATABASE_PORT}:3306"
+      - "${DATABASE_PORT}:5432"
     environment:
-      MYSQL_ROOT_PASSWORD: "${DATABASE_ROOT_PASSWORD}"
+      - POSTGRES_DB=resserv
+      - POSTGRES_USER=${DATABASE_USER_NAME}
+      - POSTGRES_PASSWORD=${DATABASE_USER_PASSWORD}
