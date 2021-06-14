@@ -14,6 +14,7 @@ services:
       - "5000:8080"
     depends_on:
       - database
+      - rabbitmq
   web:
     container_name: web
     build:
@@ -34,3 +35,23 @@ services:
       - POSTGRES_DB=resserv
       - POSTGRES_USER=${DATABASE_USER_NAME}
       - POSTGRES_PASSWORD=${DATABASE_USER_PASSWORD}
+
+  rabbitmq:
+    image: rabbitmq:3.8.11-management
+    volumes:
+      - ./rabbitmq:/rabbitmq
+    labels:
+      data: amqp
+    hostname: rabbitmq
+    environment:
+      - RABBITMQ_VM_MEMORY_HIGH_WATERMARK=0.2
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 536870912 load_definitions "/rabbitmq/definitions.json"
+    ports:
+      - "5672:5672/tcp"
+      - "15672:15672/tcp"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
