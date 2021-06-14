@@ -51,7 +51,16 @@
   "policies": [],
   "queues": [
     {
-      "name": "messages",
+      "name": "low_messages",
+      "vhost": "resserv",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "high_messages",
       "vhost": "resserv",
       "durable": true,
       "auto_delete": false,
@@ -84,7 +93,7 @@
     {
       "source": "high",
       "vhost": "resserv",
-      "destination": "messages",
+      "destination": "high_messages",
       "destination_type": "queue",
       "routing_key": "high",
       "arguments": {}
@@ -92,7 +101,7 @@
     {
       "source": "low",
       "vhost": "resserv",
-      "destination": "messages",
+      "destination": "low_messages",
       "destination_type": "queue",
       "routing_key": "low",
       "arguments": {}
