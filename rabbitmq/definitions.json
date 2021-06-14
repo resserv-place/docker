@@ -15,9 +15,19 @@
   "vhosts": [
     {
       "name": "/"
+    },
+    {
+      "name": "resserv"
     }
   ],
   "permissions": [
+    {
+      "user": "guest",
+      "vhost": "resserv",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
     {
       "user": "guest",
       "vhost": "/",
