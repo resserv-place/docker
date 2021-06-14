@@ -23,6 +23,7 @@ RUN docker-php-ext-configure gd --with-jpeg \
     && pecl install \
         redis \
         xdebug \
+        amqp-1.11.0beta \
     && docker-php-ext-install \
         opcache \
         pdo \
@@ -35,7 +36,8 @@ RUN docker-php-ext-configure gd --with-jpeg \
         pcntl \
         zip \
     && docker-php-ext-enable \
-        redis
+        redis \
+        amqp
 
 # CLEAN UP CONTAINER
 RUN apt purge -y $PHPSIZE_DEPS \
